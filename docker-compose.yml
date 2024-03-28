@@ -168,11 +168,13 @@ services:
         POSTGRES_PASSWORD: "docker"
     ports:
       - 9432:5432
-    volumes:
-      - ./custom-entrypoint.sh:/usr/local/bin/custom-entrypoint.sh
-      - ./postgresql.conf:/custom-config/postgresql.conf
-    entrypoint: ["/usr/local/bin/custom-entrypoint.sh"] 
-  
+    command:
+      - "postgres"
+      - "-c"
+      - "wal_level=logical"
+      - "-c"
+      - "max_replication_slots=5"
+
   mongo:
     container_name: mongo-db
     image: mongo
